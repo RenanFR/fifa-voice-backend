@@ -1,0 +1,34 @@
+version: 0.2
+env:
+  shell: bash
+phases: 
+  pre_build: 
+    commands: 
+    - echo Logging in to Amazon ECR....
+    - aws --version
+    - AWS_DEFAULT_REGION=sa-east-1
+    - AWS_ACCOUNT_ID=270167558056
+    - APPLICATION_NAME=fifa-voice-backend
+    - REPOSITORY_URI=$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
+    - IMAGE_URI=$REPOSITORY_URI/$APPLICATION_NAME
+    - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $REPOSITORY_URI     
+    - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+    - IMAGE_TAG=${COMMIT_HASH:=latest}
+    - export CODEARTIFACT_AUTH_TOKEN=`aws codeartifact get-authorization-token --domain agama --domain-owner 270167558056 --query authorizationToken --output text --region us-east-1`
+    - . ~/.profile
+  build: 
+    commands: 
+    - echo Build started on `date` 
+    - ./mvnw -s settings.xml clean package
+    - ./mvnw -s settings.xml spring-boot:build-image -Dspring-boot.build-image.imageName=$APPLICATION_NAME:$IMAGE_TAG
+    - docker tag $APPLICATION_NAME:$IMAGE_TAG $IMAGE_URI:$IMAGE_TAG 
+  post_build: 
+    commands: 
+    - echo Build completed on `date` 
+    - echo pushing to repo
+    - docker push $IMAGE_URI:$IMAGE_TAG
+    - echo Writing image definitions file... 
+    - printf '[{"name":"fifa-voice-backend", "imageUri":"%s"}]' $IMAGE_URI:$IMAGE_TAG > imagedefinitions.json
+artifacts:
+  files:
+    - imagedefinitions.json
