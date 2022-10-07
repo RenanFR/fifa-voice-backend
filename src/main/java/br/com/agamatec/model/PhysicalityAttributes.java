@@ -14,7 +14,10 @@ import lombok.NoArgsConstructor;
 @Embeddable
 public class PhysicalityAttributes {
 	public int jumping;
+	
 	public int stamina;
+	
 	public int strength;
+	
 	public int aggression;
 }

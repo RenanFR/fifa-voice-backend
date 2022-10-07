@@ -1,6 +1,7 @@
 package br.com.agamatec;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -13,6 +14,9 @@ public class FifaVoiceBackendApplication {
 
 	@Autowired
 	private FutDBService futDBService;
+	
+	@Value("${shouldFulfillInternalDatabase}")
+	private boolean shouldFulfillInternalDatabase;
 
 	public static void main(String[] args) {
 		SpringApplication.run(FifaVoiceBackendApplication.class, args);
@@ -20,7 +24,10 @@ public class FifaVoiceBackendApplication {
 
 	@EventListener(ContextRefreshedEvent.class)
 	public void fillInternalDatabaseOfPlayers() throws Exception {
-		futDBService.fetchAndSavePlayers();
+		if (shouldFulfillInternalDatabase) {
+			futDBService.fetchAndSavePlayers();
+			
+		}
 	}
 
 }

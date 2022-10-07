@@ -1,5 +1,6 @@
 package br.com.agamatec.model;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 import lombok.AllArgsConstructor;
@@ -14,9 +15,16 @@ import lombok.NoArgsConstructor;
 @Embeddable
 public class ShootingAttributes {
 	public int positioning;
+	
 	public int finishing;
+	
+	@Column(name = "shot_power")
 	public int shotPower;
+	
+	@Column(name = "long_shots")
 	public int longShots;
+	
 	public int volleys;
+	
 	public int penalties;
 }

@@ -14,8 +14,12 @@ import lombok.NoArgsConstructor;
 @Embeddable
 public class GoalkeeperAttributes {
 	public int diving;
+	
 	public int handling;
+	
 	public int kicking;
+	
 	public int positioning;
+	
 	public int reflexes;
 }

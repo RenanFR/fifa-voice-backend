@@ -21,14 +21,16 @@ public class FutDBService {
 	private PlayerRepository playerRepository;
 
 	public void fetchAndSavePlayers() throws Exception {
-		List<Player> players = futDBHttpClient.fetchPlayers();
-		playerRepository.saveAll(players);
+		int pageTotal = 812;
+		for (int currentPage = 1; currentPage < pageTotal; currentPage++) {
+			List<Player> players = futDBHttpClient.fetchPlayers(pageTotal, currentPage);
+			playerRepository.saveAll(players);
+		}
 	}
 
 	public List<Player> getBestPlayers(int amountOfPlayers) {
 		return playerRepository.findAll().stream().sorted(Comparator.comparing(Player::getRating))
 				.limit(amountOfPlayers).collect(Collectors.toList());
-
 	}
 
 }

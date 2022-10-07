@@ -1,6 +1,6 @@
 package br.com.agamatec.model;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,5 +13,5 @@ import lombok.NoArgsConstructor;
 @Builder
 public class PlayersResponse {
 	public Pagination pagination;
-	public ArrayList<Player> items;
+	public List<Player> items;
 }

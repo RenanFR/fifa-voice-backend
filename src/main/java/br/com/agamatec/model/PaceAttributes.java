@@ -1,5 +1,6 @@
 package br.com.agamatec.model;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 import lombok.AllArgsConstructor;
@@ -14,5 +15,7 @@ import lombok.NoArgsConstructor;
 @Embeddable
 public class PaceAttributes {
 	public int acceleration;
+	
+	@Column(name = "sprint_speed")
 	public int sprintSpeed;
 }
