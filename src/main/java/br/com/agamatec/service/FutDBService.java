@@ -29,7 +29,7 @@ public class FutDBService {
 	}
 
 	public List<Player> getBestPlayers(int amountOfPlayers) {
-		return playerRepository.findAll().stream().sorted(Comparator.comparing(Player::getRating))
+		return playerRepository.findAll().stream().sorted(Comparator.comparing(Player::getRating).reversed())
 				.limit(amountOfPlayers).collect(Collectors.toList());
 	}
 
